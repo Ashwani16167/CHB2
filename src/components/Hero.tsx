@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../utils/translations'
 import QuoteDisplay from './QuoteDisplay'

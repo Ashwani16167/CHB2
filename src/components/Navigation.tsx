@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from './translations'
 import ThemeToggle from './ThemeToggle'
-import QuoteDisplay from './QuoteDisplay'
+
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
