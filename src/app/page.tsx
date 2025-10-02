@@ -1,103 +1,86 @@
-import Image from "next/image";
+import Background3D from '../components/Background3D'
+import Hero from '../components/Hero'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main 
+      className="min-h-screen relative chb-spiritual-background" 
+      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+      <Background3D />
+      <div className="relative z-10 container mx-auto">
+        <Hero />
+        
+        <div className="px-4 py-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/podcasts" className="chb-btn-saffron font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              🎧 पॉडकास्ट सुनें
+            </a>
+            <a href="/ebooks" className="chb-btn-green font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              📚 ई-बुक्स पढ़ें
+            </a>
+            <a href="/contact" className="chb-btn-outline font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+              संपर्क करें
+            </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        
+        <div className="mt-16">
+          <h2 className="text-2xl text-center mb-8 text-gray-800 dark:text-white">हमसे जुड़ें</h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a href="https://chat.whatsapp.com/DQQdqhLp12t18k0Bfj8BaK" target="_blank" rel="noopener noreferrer" 
+               className="chb-btn-green px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              WhatsApp 💬
+            </a>
+            <a href="https://www.instagram.com/chhupahuabharat/" target="_blank" rel="noopener noreferrer"
+               className="chb-btn-saffron px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              Instagram 📷
+            </a>
+            <a href="https://www.youtube.com/@ChhupaHuaBharat" target="_blank" rel="noopener noreferrer"
+               className="chb-btn-saffron px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              YouTube 📺
+            </a>
+            <a href="https://open.spotify.com/show/2lU5VLDmjg44tMa7pP1GhF" target="_blank" rel="noopener noreferrer"
+               className="chb-btn-green px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              Spotify 🎵
+            </a>
+            <a href="https://music.amazon.in/podcasts/a63dd832-5e05-4dcd-8a2c-3e9a6fd10e5c/chhupa-hua-bharat" target="_blank" rel="noopener noreferrer"
+               className="chb-btn-navy px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              Amazon Music 🎶
+            </a>
+            <a href="https://www.jiosaavn.com/shows/chhupa-hua-bharat/1/K3pWhtIE58w_" target="_blank" rel="noopener noreferrer"
+               className="chb-btn-navy px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white">
+              JioSaavn 🎧
+            </a>
+          </div>
+        </div>
+        
+        {/* Feature Cards */}
+        <div className="mt-16 grid md:grid-cols-3 gap-8">
+          <div className="feature-card glass-card bg-white/90 dark:bg-white/10 backdrop-blur-lg border border-gray-200 dark:border-white/20 p-6 rounded-xl shadow-xl">
+            <div className="text-4xl mb-4">🎙️</div>
+            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">पॉडकास्ट</h3>
+            <p className="text-gray-700 dark:text-gray-300">
+              साप्ताहिक पॉडकास्ट में सुनें भारतीय ज्ञान और आधुनिक विज्ञान की गहरी चर्चा
+            </p>
+          </div>
+          
+          <div className="feature-card glass-card bg-white/90 dark:bg-white/10 backdrop-blur-lg border border-gray-200 dark:border-white/20 p-6 rounded-xl shadow-xl">
+            <div className="text-4xl mb-4">📚</div>
+            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">ई-बुक्स</h3>
+            <p className="text-gray-700 dark:text-gray-300">
+              गहन शोध पर आधारित पुस्तकें और ग्रंथ पढ़ें
+            </p>
+          </div>
+          
+          <div className="feature-card glass-card bg-white/90 dark:bg-white/10 backdrop-blur-lg border border-gray-200 dark:border-white/20 p-6 rounded-xl shadow-xl">
+            <div className="text-4xl mb-4">✍️</div>
+            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">लेख</h3>
+            <p className="text-gray-700 dark:text-gray-300">
+              नियमित लेख और शोध पत्र पढ़ें
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

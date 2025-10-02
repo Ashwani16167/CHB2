@@ -1,6 +1,7 @@
 {
-  "name": "chb-nextjs",
-  "version": "0.1.0",
+  "name": "chhupa-hua-bharat-nextjs",
+  "version": "1.0.0",
+  "description": "Chhupa Hua Bharat - Next.js website where devotion meets science",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
