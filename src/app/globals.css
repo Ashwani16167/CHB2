@@ -1,7 +1,9 @@
 /* Custom Google Font for Hindi */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* CHB Brand Colors - Indian Flag Inspired */
 :root {
