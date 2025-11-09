@@ -1,69 +1,198 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+import { podcastEpisodes, podcastCategories } from '@/config/podcast-data';
+import { Youtube, Music, Radio, RefreshCw } from 'lucide-react';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { useNetworkState } from '@/hooks/useNetworkState';
+
 export default function PodcastsPage() {
-  return (
-    <main className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold font-hindi text-orange-600 mb-4">
-            पॉडकास्ट
-          </h1>
-          <p className="text-lg font-hindi text-gray-600 dark:text-gray-400">
-            आध्यात्म और विज्ञान के अनूठे मेल को सुनें
-          </p>
-        </div>
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [episodes, setEpisodes] = useState(podcastEpisodes);
+  const { state, isOnline, retryCount, setState, retry } = useNetworkState(3);
+
+  useEffect(() => {
+    try {
+      setState('loading');
+      
+      const timer = setTimeout(() => {
+        if (!isOnline) {
+          setState('error');
+          return;
+        }
+
+        const filtered = selectedCategory === 'all' 
+          ? podcastEpisodes 
+          : podcastEpisodes.filter(episode => episode.category === selectedCategory);
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-hindi font-bold mb-4">हनुमान जी की शक्तियों का वैज्ञानिक विश्लेषण</h3>
-            <p className="font-hindi text-gray-600 dark:text-gray-400 mb-4">
-              भक्ति और वैज्ञानिक दृष्टिकोण का अनूठा मेल
-            </p>
-            <div className="flex gap-2">
-              <a href="https://youtube.com/@chhupahuabharat" target="_blank" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                YouTube
-              </a>
-              <a href="https://open.spotify.com/show/06XoN5CPJllRhWW7YT4UU3" target="_blank" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Spotify
-              </a>
-            </div>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-hindi font-bold mb-4">प्राचीन भारतीय गणित के चमत्कार</h3>
-            <p className="font-hindi text-gray-600 dark:text-gray-400 mb-4">
-              कैसे हमारे पूर्वजों ने गणित में नई खोजें कीं
-            </p>
-            <div className="flex gap-2">
-              <a href="https://youtube.com/@chhupahuabharat" target="_blank" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                YouTube
-              </a>
-              <a href="https://open.spotify.com/show/06XoN5CPJllRhWW7YT4UU3" target="_blank" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Spotify
-              </a>
-            </div>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-hindi font-bold mb-4">सनातन धर्म और खगोल विज्ञान</h3>
-            <p className="font-hindi text-gray-600 dark:text-gray-400 mb-4">
-              वेदों में छुपे खगोलीय रहस्य
-            </p>
-            <div className="flex gap-2">
-              <a href="https://youtube.com/@chhupahuabharat" target="_blank" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                YouTube
-              </a>
-              <a href="https://open.spotify.com/show/06XoN5CPJllRhWW7YT4UU3" target="_blank" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Spotify
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <div className="mt-12 text-center">
-          <a href="/" className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-colors">
-            ← वापस होम
-          </a>
-        </div>
+        setEpisodes(filtered);
+        setState('success');
+      }, 500);
+
+      return () => clearTimeout(timer);
+    } catch (err) {
+      setState('error');
+    }
+  }, [selectedCategory, isOnline, setState]);
+
+  const renderError = () => (
+    <div className="min-h-[400px] flex items-center justify-center">
+      <div className="text-center p-8 bg-red-50 dark:bg-red-900/20 rounded-xl max-w-lg">
+        <h2 className="text-2xl font-hindi text-red-600 dark:text-red-400 mb-4">
+          {!isOnline ? 'इंटरनेट कनेक्शन नहीं है' : 'कुछ गलत हो गया'}
+        </h2>
+        <p className="font-hindi text-gray-800 dark:text-gray-200 mb-6">
+          {!isOnline 
+            ? 'कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।'
+            : 'माफ़ कीजिये, डेटा लोड करने में समस्या आई है।'
+          }
+        </p>
+        <button
+          onClick={retry}
+          disabled={state === 'loading'}
+          className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors inline-flex items-center gap-2"
+        >
+          <RefreshCw size={18} className={state === 'loading' ? 'animate-spin' : ''} />
+          <span>पुनः प्रयास करें</span>
+        </button>
       </div>
-    </main>
+    </div>
+  );
+
+  return (
+    <ErrorBoundary>
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold font-hindi text-orange-600 mb-4">
+              पॉडकास्ट
+            </h1>
+            <p className="text-lg font-hindi text-gray-600 dark:text-gray-400">
+              आध्यात्म और विज्ञान के अनूठे मेल को सुनें
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedCategory === 'all'
+                    ? 'bg-orange-600 text-white shadow-md'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-700'
+                }`}
+                disabled={state === 'loading'}
+              >
+                सभी एपिसोड
+              </button>
+              {Object.entries(podcastCategories).map(([key, value]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedCategory(key)}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                    selectedCategory === key
+                      ? 'bg-orange-600 text-white shadow-md'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-gray-700'
+                  }`}
+                  disabled={state === 'loading'}
+                >
+                  {value.hi}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            {state === 'loading' ? (
+              <div className="grid md:grid-cols-2 gap-8">
+                {[1, 2].map((n) => (
+                  <div key={n} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm animate-pulse">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
+                    <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+                    <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                    <div className="flex gap-3">
+                      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+                      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : state === 'error' ? (
+              renderError()
+            ) : (
+              <div className="grid md:grid-cols-2 gap-8">
+                {episodes.map((episode) => (
+                  <div key={episode.id} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
+                        Episode {episode.episode}
+                      </span>
+                      <span className="text-sm text-gray-500">{episode.duration}</span>
+                    </div>
+                    <h3 className="text-xl font-hindi font-bold text-gray-900 dark:text-white mb-3">{episode.title.hi}</h3>
+                    <p className="font-hindi text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">
+                      {episode.description.hi}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-3">
+                        {episode.youtubeUrl && (
+                          <a 
+                            href={episode.youtubeUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
+                          >
+                            <Youtube size={18} />
+                            <span>YouTube</span>
+                          </a>
+                        )}
+                        <a 
+                          href={episode.spotifyUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
+                        >
+                          <Music size={18} />
+                          <span>Spotify</span>
+                        </a>
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        {new Date(episode.date).toLocaleDateString('hi-IN')}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="max-w-2xl mx-auto mt-16 text-center">
+            <h2 className="text-xl font-hindi font-semibold text-gray-900 dark:text-white mb-6">
+              अन्य प्लेटफॉर्म्स पर भी सुनें
+            </h2>
+            <div className="inline-flex flex-wrap justify-center gap-4">
+              <a 
+                href="https://music.amazon.in/podcasts/b7b42549-18e4-4ddb-814a-5b5e91e97644/%F0%9F%8E%A7-chhupa-hua-bharat-%E2%80%93-bhakti-hi-vigyan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+              >
+                <Music size={20} />
+                <span>Amazon Music</span>
+              </a>
+              <a 
+                href="https://www.jiosaavn.com/shows/-chhupa-hua-bharat-%e2%80%93-bhakti-hi-vigyan.-/1/9yLYvynnX68_"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-purple-600 text-white hover:bg-purple-700 transition-colors"
+              >
+                <Radio size={20} />
+                <span>JioSaavn</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </ErrorBoundary>
   );
 }
